@@ -51,7 +51,7 @@ export const createUser = async (
 ) => {
   try {
     const { username, password } = req.body;
-    const image = req.file;
+    const image = req.file?.filename;
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     const user = await User.create({
@@ -59,7 +59,7 @@ export const createUser = async (
       password: hashedPassword,
       image,
     });
-    res.status(201).json({ user });
+    res.status(201).json({ message: "The user has been created" });
   } catch (error) {
     next(error);
   }

@@ -1,4 +1,3 @@
-import chalk from "chalk";
 import debug from "debug";
 import mongoose from "mongoose";
 import { CustomError } from "../CustomError/CustomError.js";
@@ -8,7 +7,7 @@ const connectDatabase = async (url: string) => {
 
   try {
     await mongoose.connect(url);
-    debug(chalk.green(`Connected to database `));
+    debug(`Connected to database `);
   } catch (error) {
     const customError = new CustomError(
       error.message as string,

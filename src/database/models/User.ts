@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
   },
   image: {
-    type: Object,
+    type: String,
     required: false,
   },
 });
