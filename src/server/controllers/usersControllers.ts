@@ -3,8 +3,9 @@ import type { UserCredentials } from "../types.js";
 import { User } from "../../database/models/User.js";
 import { CustomError } from "../../CustomError/CustomError.js";
 import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
 
-const loginUser = async (
+export const loginUser = async (
   req: Request<
     Record<string, unknown>,
     Record<string, unknown>,
@@ -39,4 +40,27 @@ const loginUser = async (
   res.status(200).json({ token });
 };
 
-export default loginUser;
+export const createUser = async (
+  req: Request<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    UserCredentials
+  >,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { username, password } = req.body;
+    const image = req.file;
+    const hashedPassword = await bcryptjs.hash(password, 10);
+
+    const user = await User.create({
+      username,
+      password: hashedPassword,
+      image,
+    });
+    res.status(201).json({ user });
+  } catch (error) {
+    next(error);
+  }
+};
